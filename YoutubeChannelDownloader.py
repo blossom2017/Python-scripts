@@ -26,3 +26,7 @@ def DownloadVideo(video_link, folder_path, resolution=None):
 	print("Audio Video merging done")
 	return None
 
+def DownloadVideoFromChannel(channel_link, folder_path, resolution):
+	channel = Channel(channel_link)
+	for video_link in channel.video_urls[:3]:
+		DownloadVideo(video_link, folder_path, resolution)
