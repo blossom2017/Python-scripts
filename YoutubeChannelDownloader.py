@@ -1,6 +1,7 @@
 from pytube import YouTube
 from pytube import Channel
 from slugify import slugify
+import os
 import csv
 import sys
 import ffmpeg
@@ -35,9 +36,12 @@ def DownloadVideo(video_link, folder_path, resolution=None):
 def DownloadVideoFromChannel(channel_link, folder_path, resolution):
 	channel = Channel(channel_link)
 	list_of_videos_downloaded = []
-	# TODO(Add exception handling in case file doesnt exist)
+	youtube_history_filename = 'youtube_videos_downloaded_history.csv'
+	if not os.path.exists(youtube_history_filename):
+		csvfile = open(youtube_history_filename, 'w')
+
 	# Open in read mode
-	with open('youtube_videos_downloaded_history.csv', 'r', newline='') as csvfile:
+	with open(youtube_history_filename, 'r', newline='') as csvfile:
 		all_rows = csv.reader(csvfile)
 		for row in all_rows:
 			list_of_videos_downloaded.append(row[0])
@@ -49,7 +53,7 @@ def DownloadVideoFromChannel(channel_link, folder_path, resolution):
 			print('Video already existing')
 		else:
 			DownloadVideo(video_link, folder_path, resolution)
-			with open('youtube_videos_downloaded_history.csv','a+',newline='') as csvfile:
+			with open(youtube_history_filename,'a+',newline='') as csvfile:
 				all_rows = csv.writer(csvfile, quoting=csv.QUOTE_MINIMAL)
 				all_rows.writerow([video_link])
 			print('Video done')
