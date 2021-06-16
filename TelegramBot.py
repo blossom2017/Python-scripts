@@ -20,7 +20,7 @@ def capsCommandHandler(update, context):
 def textHandler(update, context):
 	context.bot.send_message(chat_id=update.effective_chat.id, text="Sorry, I can't respond to your messages yet.Type /help for a list of all commands")
 
-updater = Updater(token='1715192581:AAHN2LJ0pUo4lORhR771ywKuL-RhzM0AAa8', use_context=True)
+updater = Updater(token='TOKEN', use_context=True)
 dispatcher = updater.dispatcher
 logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
                      level=logging.INFO)
