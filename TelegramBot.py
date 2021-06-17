@@ -2,6 +2,7 @@ from telegram.ext import Updater
 from telegram.ext import MessageHandler, Filters
 import logging
 from telegram.ext import CommandHandler
+from telegram.error import TelegramError
 
 def startCommandHandler(update, context):
     context.bot.send_message(chat_id=update.effective_chat.id, text="I'm a test-bot, please talk to me!")
@@ -12,15 +13,20 @@ def helpCommandHander(update, context):
 	logging.info("/help command received")
 
 def capsCommandHandler(update, context):
-	# TODO Add an exception handler for when the text was empty
-	text_caps = ' '.join(context.args).upper()
-	context.bot.send_message(chat_id=update.effective_chat.id, text=text_caps)
-	logging.info("/caps command received")
+	try:
+		text_caps = ' '.join(context.args).upper()
+		context.bot.send_message(chat_id=update.effective_chat.id, text=text_caps)
+		logging.info("/caps command received")
+	except TelegramError as error:
+		if str(error) == "Message text is empty":
+			logging.info("/caps command received but with empty text")
+			context.bot.send_message(chat_id=update.effective_chat.id, text="Please type something after /caps to convert it to capitals")
 
 def textHandler(update, context):
 	context.bot.send_message(chat_id=update.effective_chat.id, text="Sorry, I can't respond to your messages yet.Type /help for a list of all commands")
 
-updater = Updater(token='1715192581:AAHN2LJ0pUo4lORhR771ywKuL-RhzM0AAa8', use_context=True)
+
+updater = Updater(token='TOKEN', use_context=True)
 dispatcher = updater.dispatcher
 logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
                      level=logging.INFO)
