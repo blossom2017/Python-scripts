@@ -1,5 +1,5 @@
 # python-scripts
-Contains some scripts to automate stuff
+Contains some scripts to automate stuff / python mini-projects.
 
 **Script to download all videos of a youtube channel**
 * brew install python
