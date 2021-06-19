@@ -32,6 +32,7 @@ def main():
 			time.sleep(1)
 
 	time.sleep(5)
+
 	topic_tag = "array"
 	lc_url = "https://leetcode.com/tag/" + topic_tag + "/"
 	driver.get(lc_url)
@@ -52,6 +53,7 @@ def main():
 				submission_status = data[0]['value']
 			else:
 				submission_status = 'nt'
+			print(data)
 			number = data[1].text
 			title = data[2].text
 			div = data[2].find("div").find("a")
