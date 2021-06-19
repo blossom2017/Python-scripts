@@ -9,4 +9,8 @@ Contains some scripts to automate stuff / python mini-projects.
 * brew install ffmpeg
 * python3 YoutubeChannelDownloader.py https://www.youtube.com/c/SkyGuitar/videos YoutubeVideos 1080p
 
+**Missing letters puzzle solver**
+* pip3 install pyenchant
+* brew install enchant
+* Usage - python3 puzzle.py voeyba 10 
 
