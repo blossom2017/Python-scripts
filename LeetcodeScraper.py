@@ -32,7 +32,6 @@ def main():
 			time.sleep(1)
 
 	time.sleep(5)
-
 	topic_tag = "array"
 	lc_url = "https://leetcode.com/tag/" + topic_tag + "/"
 	driver.get(lc_url)
@@ -40,7 +39,8 @@ def main():
 	# Check the [show problem tags] button
 	driver.find_element_by_xpath("//*[@id=\"app\"]/div/div/div/label").click()
 	time.sleep(5)
-
+	# Can add company specific tags here too
+	required_tags = ["Array", "Hash Table"]
 	soup = BeautifulSoup(driver.find_element_by_xpath("//*").get_attribute("outerHTML"), "html.parser")
 	tables = soup.find_all("tbody", {"class": "reactable-data"})
 	rows = soup.find_all("tr")
@@ -48,19 +48,27 @@ def main():
 	for item in rows:
 		data = item.find_all("td")
 		if len(data) > 5:
-			print(data)
+			if data[0].get("value"):
+				submission_status = data[0]['value']
+			else:
+				submission_status = 'nt'
 			number = data[1].text
 			title = data[2].text
 			div = data[2].find("div").find("a")
 			problem_link = "https://leetcode.com"+div['href']
 			# Check the tags here
+			tags_div = data[3].find("div").find_all("a")
+			tags= []
+			for tag in tags_div:
+				tags.append(tag.text)
 			acceptance = data[4].text
 			difficulty = data[5].text
 			if data[6].get("value"):
 				frequency = data[6]['value']
 			else: 
 				frequency = 'N/A'
-			file_row += (number + "," + title + "," + problem_link + "," + acceptance + "," + difficulty + "," + frequency + "\n")
+			if (bool(set(tags) & set(required_tags))):
+				file_row += (submission_status + "," + number + "," + title + "," + problem_link + "," + '|'.join(tags) + "," + acceptance + "," + difficulty + "," + frequency + "\n")
 
 	f = open("./problems/" + topic_tag, "w")
 	f.write(file_row)
